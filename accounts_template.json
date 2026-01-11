@@ -1,0 +1,18 @@
+{
+  "accounts": [
+    {
+      "id": "monkey-1",
+      "gmail": {
+        "email": "monkey1@example.com"
+      },
+      "discord": {
+        "tag": "MonkeyOne#0001"
+      },
+      "info": {
+        "nickname": "Monkey One",
+        "full_name": "Monkey One",
+        "profile_picture": "assets/capuchin.jpg"
+      }
+    }
+  ]
+}

@@ -11,6 +11,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+from monkey_watch.config import load_dotenv
 DEFAULT_DEBUG_BASE = 9222
 
 
@@ -114,7 +115,7 @@ def main() -> int:
         "--accounts",
         type=Path,
         default=Path(__file__).resolve().parent / "accounts.json",
-        help="Path to accounts.json",
+        help="Path to accounts.json (copy from accounts_template.json).",
     )
     parser.add_argument(
         "-n",
@@ -145,6 +146,7 @@ def main() -> int:
     )
 
     args = parser.parse_args()
+    load_dotenv()
 
     try:
         from selenium import webdriver

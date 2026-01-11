@@ -35,6 +35,7 @@ from .config import (
     DEFAULT_STARTUP_DELAY,
     DEFAULT_URL,
     WatchConfig,
+    load_dotenv,
     load_accounts,
     load_channel_names,
     load_servers,
@@ -77,13 +78,13 @@ def parse_args() -> argparse.Namespace:
         "--accounts",
         type=Path,
         default=Path(__file__).resolve().parents[1] / "accounts.json",
-        help="Path to accounts.json",
+        help="Path to accounts.json (copy from accounts_template.json).",
     )
     parser.add_argument(
         "--servers",
         type=Path,
         default=Path(__file__).resolve().parents[1] / "servers.json",
-        help="Path to servers.json (optional, for channel names).",
+        help="Path to servers.json (supports ${VARS} from .env).",
     )
     parser.add_argument(
         "-n",
@@ -205,6 +206,7 @@ def handle_event(
 
 def main() -> int:
     args = parse_args()
+    load_dotenv()
 
     try:
         from selenium import webdriver

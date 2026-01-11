@@ -2,14 +2,14 @@
   {
     "id": "1",
     "name": "Home Tree",
-    "server_id": "1260013832949207080",
+    "server_id": "${HOME_TREE_SERVER_ID}",
     "channels": [
       {
-        "id": "1260013833875886194",
+        "id": "${HOME_TREE_GENERAL_CHANNEL_ID}",
         "name": "general"
       },
       {
-        "id": "1456894213647106203",
+        "id": "${HOME_TREE_TEST_JUNGLE_CHANNEL_ID}",
         "name": "test-jungle"
       }
     ]
@@ -17,10 +17,10 @@
   {
     "id": "2",
     "name": "The Jungle",
-    "server_id": "1393689950238543972",
+    "server_id": "${JUNGLE_SERVER_ID}",
     "channels": [
       {
-        "id": "1393689951958335540",
+        "id": "${JUNGLE_GENERAL_CHANNEL_ID}",
         "name": "general"
       }
     ]

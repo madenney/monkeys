@@ -25,6 +25,12 @@ Remote debugging is enabled by default (base port 9222). Override with `DEBUG_PO
 ./scripts/launch_monkeys.sh
 ```
 
+## Configuration files
+
+- Copy `accounts_template.json` to `accounts.json` and fill in your monkey accounts.
+- Copy `.env.example` to `.env` and set your Discord IDs (admin + servers/channels).
+- `servers.json` references `${VARS}` from `.env`, so you can keep IDs out of git.
+
 ## Auto-fill login email fields
 
 ```bash
@@ -33,7 +39,7 @@ Remote debugging is enabled by default (base port 9222). Override with `DEBUG_PO
 
 ## Post a message to a channel
 
-`-n` and `-c` map to entries in `servers.json`.
+`-n` and `-c` map to entries in `servers.json` (IDs come from `.env`).
 
 ```bash
 ./scripts/launch_monkeys.sh

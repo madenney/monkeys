@@ -14,6 +14,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+from monkey_watch.config import expand_env_values, load_dotenv
 DEFAULT_DEBUG_BASE = 9222
 DEFAULT_MESSAGE = "test"
 DEFAULT_TIMEOUT = 12.0
@@ -40,6 +41,7 @@ def load_servers(path: Path) -> List[Dict[str, Any]]:
         print(f"servers file must contain a JSON array: {path}", file=sys.stderr)
         sys.exit(2)
 
+    data = expand_env_values(data)
     return data
 
 
@@ -268,13 +270,13 @@ def main() -> int:
         "--accounts",
         type=Path,
         default=Path(__file__).resolve().parent / "accounts.json",
-        help="Path to accounts.json",
+        help="Path to accounts.json (copy from accounts_template.json).",
     )
     parser.add_argument(
         "--servers",
         type=Path,
         default=Path(__file__).resolve().parent / "servers.json",
-        help="Path to servers.json",
+        help="Path to servers.json (supports ${VARS} from .env).",
     )
     parser.add_argument(
         "-i",
@@ -339,6 +341,7 @@ def main() -> int:
     )
 
     args = parser.parse_args()
+    load_dotenv()
 
     servers = load_servers(args.servers)
     server = find_server_by_id(servers, args.server_id)

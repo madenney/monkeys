@@ -7,6 +7,13 @@ REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd -P)"
 LAUNCH_SCRIPT="${LAUNCH_SCRIPT:-$REPO_DIR/launch.sh}"
 ACCOUNTS_JSON="${ACCOUNTS_JSON:-$REPO_DIR/accounts.json}"
 
+if [[ -f "$REPO_DIR/.env" ]]; then
+  set -a
+  # shellcheck disable=SC1090
+  source "$REPO_DIR/.env"
+  set +a
+fi
+
 usage() {
   cat <<'USAGE'
 Usage: launch_monkeys.sh [-n COUNT]
@@ -16,7 +23,9 @@ Options:
   -v         Enable verbose watch logging.
 
 Environment:
+  ACCOUNTS_JSON  Path to accounts.json (copy from accounts_template.json).
   WATCH_MODULE  Python module to run for watching (default: monkey_watch).
+  .env          Loaded automatically if present.
 USAGE
 }
 

@@ -258,7 +258,7 @@ def main() -> int:
         "--accounts",
         type=Path,
         default=default_path,
-        help=f"Path to accounts.json (default: {default_path})",
+        help=f"Path to accounts.json (copy from accounts_template.json; default: {default_path})",
     )
     parser.add_argument(
         "--text",

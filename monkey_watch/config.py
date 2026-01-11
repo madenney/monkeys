@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import os
+import re
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,7 +23,9 @@ DEFAULT_GLOBAL_DEDUPE_LIMIT = 5000
 DEFAULT_SERVER_NAME = "Home Tree"
 DEFAULT_CHANNEL_NAME = "test-jungle"
 DEFAULT_CONTROL_PORT = 7331
-DEFAULT_ADMIN_USER = "298001965697204224"
+DEFAULT_ADMIN_USER = ""
+
+_ENV_PATTERN = re.compile(r"\$(?:\{([A-Z0-9_]+)\}|([A-Z0-9_]+))")
 
 
 @dataclass(frozen=True)
@@ -70,6 +74,56 @@ def parse_env_str(value: Optional[str]) -> str:
     return value.strip()
 
 
+def load_dotenv(path: Optional[Path] = None, *, override: bool = False) -> None:
+    env_path = path or Path(__file__).resolve().parents[1] / ".env"
+    if not env_path.is_file():
+        return
+    try:
+        raw = env_path.read_text(encoding="utf-8")
+    except OSError:
+        return
+    for line in raw.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("export "):
+            stripped = stripped[len("export ") :].strip()
+        if "=" not in stripped:
+            continue
+        key, value = stripped.split("=", 1)
+        key = key.strip()
+        value = value.strip()
+        if not key:
+            continue
+        if (
+            len(value) >= 2
+            and value[0] == value[-1]
+            and value[0] in ("'", '"')
+        ):
+            value = value[1:-1]
+        if not override and key in os.environ:
+            continue
+        os.environ[key] = value
+
+
+def _expand_env_value(value: str) -> str:
+    def replace(match: re.Match[str]) -> str:
+        key = match.group(1) or match.group(2)
+        return os.environ.get(key, "")
+
+    return _ENV_PATTERN.sub(replace, value)
+
+
+def expand_env_values(value: Any) -> Any:
+    if isinstance(value, str):
+        return _expand_env_value(value)
+    if isinstance(value, list):
+        return [expand_env_values(item) for item in value]
+    if isinstance(value, dict):
+        return {key: expand_env_values(item) for key, item in value.items()}
+    return value
+
+
 def load_accounts(path: Path) -> List[Dict[str, Any]]:
     try:
         raw = path.read_text(encoding="utf-8")
@@ -104,7 +158,7 @@ def load_servers(path: Path) -> List[Dict[str, Any]]:
 
     if not isinstance(data, list):
         return []
-
+    data = expand_env_values(data)
     return [item for item in data if isinstance(item, dict)]
 
 
