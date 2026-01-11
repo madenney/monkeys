@@ -1,0 +1,9 @@
+profiles
+accounts.json
+gmail.txt
+.env
+monkeys/
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/

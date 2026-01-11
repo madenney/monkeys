@@ -1,0 +1,28 @@
+[
+  {
+    "id": "1",
+    "name": "Home Tree",
+    "server_id": "1260013832949207080",
+    "channels": [
+      {
+        "id": "1260013833875886194",
+        "name": "general"
+      },
+      {
+        "id": "1456894213647106203",
+        "name": "test-jungle"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "name": "The Jungle",
+    "server_id": "1393689950238543972",
+    "channels": [
+      {
+        "id": "1393689951958335540",
+        "name": "general"
+      }
+    ]
+  }
+]
