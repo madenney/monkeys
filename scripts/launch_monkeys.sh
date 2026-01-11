@@ -20,6 +20,7 @@ Usage: launch_monkeys.sh [-n COUNT]
 
 Options:
   -n COUNT   Launch only COUNT monkey instances (max 7).
+  -d         Disable headless mode.
   -v         Enable verbose watch logging.
 
 Environment:
@@ -31,10 +32,14 @@ USAGE
 
 LIMIT=""
 WATCH_DEBUG=0
-while getopts ":n:vh" opt; do
+DISABLE_HEADLESS=0
+while getopts ":n:vdh" opt; do
   case "$opt" in
     n)
       LIMIT="$OPTARG"
+      ;;
+    d)
+      DISABLE_HEADLESS=1
       ;;
     v)
       WATCH_DEBUG=1
@@ -71,6 +76,10 @@ fi
 if [[ ! -f "$ACCOUNTS_JSON" ]]; then
   echo "accounts.json not found: $ACCOUNTS_JSON" >&2
   exit 1
+fi
+
+if [[ "$DISABLE_HEADLESS" -eq 1 ]]; then
+  HEADLESS=0
 fi
 
 if command -v python3 >/dev/null 2>&1; then

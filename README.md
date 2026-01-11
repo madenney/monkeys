@@ -19,10 +19,11 @@ source .venv/bin/activate
 
 ## Launching monkey instances
 
-Remote debugging is enabled by default (base port 9222). Override with `DEBUG_PORT_BASE` if needed.
+Remote debugging is enabled by default (base port 9222). Launches are headless by default; pass `-d` to show windows. Override with `DEBUG_PORT_BASE` if needed.
 
 ```bash
 ./scripts/launch_monkeys.sh
+./scripts/launch_monkeys.sh -d
 ```
 
 ## Configuration files

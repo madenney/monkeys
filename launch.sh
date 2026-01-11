@@ -6,6 +6,7 @@ START_URL="${START_URL:-https://discord.com/app}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 BASE_DIR="${BASE_DIR:-$SCRIPT_DIR/monkeys}"
 USE_APP_MODE="${USE_APP_MODE:-1}"   # 1 = --app window, 0 = normal window
+HEADLESS="${HEADLESS:-1}"           # 1 = headless mode
 DEBUG_PORT_BASE="${DEBUG_PORT_BASE:-9222}"
 DEBUG_PORT_STEP="${DEBUG_PORT_STEP:-1}"
 
@@ -44,8 +45,16 @@ launch_one() {
     --disable-features=TranslateUI
   )
 
+  if [[ "$HEADLESS" == "1" ]]; then
+    common+=(--headless=new --window-size=1280,800 --disable-gpu)
+  fi
+
   if [[ -n "$debug_port" ]]; then
     common+=(--remote-debugging-port="$debug_port")
+  fi
+
+  if [[ "$HEADLESS" == "1" ]]; then
+    USE_APP_MODE=0
   fi
 
   if [[ "$USE_APP_MODE" == "1" ]]; then

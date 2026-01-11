@@ -25,6 +25,12 @@ def main() -> int:
         action="store_true",
         help="Enable verbose watch logging.",
     )
+    parser.add_argument(
+        "-d",
+        "--display",
+        action="store_true",
+        help="Disable headless mode for launched browsers.",
+    )
 
     args = parser.parse_args()
 
@@ -44,6 +50,8 @@ def main() -> int:
         cmd.extend(["-n", str(args.count)])
     if args.watch_debug:
         cmd.append("-v")
+    if args.display:
+        cmd.append("-d")
 
     try:
         result = subprocess.run(cmd, check=False)
