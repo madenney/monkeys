@@ -1,4 +1,15 @@
-# Accounts Helper
+# Monkeys
+
+## What this is
+
+Monkeys launches multiple Discord profiles and watches messages via Chrome remote
+debugging. It can also accept simple commands (goto/say) from stdin, a local
+socket, or a Discord admin account.
+
+## Requirements
+
+- Python 3 with `selenium`
+- Chrome/Chromium installed (for remote debugging)
 
 ## Python virtual environment
 
@@ -19,7 +30,8 @@ source .venv/bin/activate
 
 ## Launching monkey instances
 
-Remote debugging is enabled by default (base port 9222). Launches are headless by default; pass `-d` to show windows. Override with `DEBUG_PORT_BASE` if needed.
+Remote debugging is enabled by default (base port 9222). Launches are headless
+by default; pass `-d` to show windows. Override with `DEBUG_PORT_BASE` if needed.
 
 ```bash
 ./scripts/launch_monkeys.sh
@@ -31,6 +43,17 @@ Remote debugging is enabled by default (base port 9222). Launches are headless b
 - Copy `accounts_template.json` to `accounts.json` and fill in your monkey accounts.
 - Copy `.env.example` to `.env` and set your Discord IDs (admin + servers/channels).
 - `servers.json` references `${VARS}` from `.env`, so you can keep IDs out of git.
+
+## Control commands
+
+Commands work from stdin, the control socket, or Discord (prefix with `monkeys`).
+
+Examples:
+
+- `servers`
+- `goto 1:1`
+- `@monkey-2 say hello`
+- `go home`
 
 ## Auto-fill login email fields
 
